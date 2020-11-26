@@ -37,6 +37,8 @@ to quickly create a Cobra application.`,
 		// Routes handling
 		s.HandleFunc("/", handler.Request).Methods("GET")
 
+		log.Println("listening on port 3000")
+
 		srv := &http.Server{
 			Addr: "0.0.0.0:3000",
 			// Good practice to set timeouts to avoid Slowloris attacks.
