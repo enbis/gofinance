@@ -12,7 +12,7 @@ type responsePayload struct {
 }
 
 func Request(w http.ResponseWriter, r *http.Request) {
-	t := r.URL.Query().Get("data")
+	t := r.URL.Query().Get("ticker")
 	data := foundamentals.Get(t)
 
 	w.Header().Add("Content-Type", "application/json")

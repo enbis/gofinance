@@ -1,51 +1,42 @@
 package foundamentals
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 	"strings"
 
-	"github.com/PuerkitoBio/goquery"
+	"github.com/enbis/gofinance/internal/app/gofinance/scraping"
+	"github.com/enbis/gofinance/internal/app/gofinance/types"
 )
 
 const (
-	scrapeUrl string = "https://finance.yahoo.com/quote"
+	prefixUrl string = "https://finance.yahoo.com/quote"
 )
 
 func Get(t string) string {
 	var response string
-	url := fmt.Sprintf("%s/%s", scrapeUrl, strings.ToUpper(t))
+	var jsonResponse types.Scraped
+	url := fmt.Sprintf("%s/%s", prefixUrl, strings.ToUpper(t))
 	fmt.Printf("%v\n", url)
 	res, err := http.Get(url)
 	if err != nil {
+		//TODO error handling
 		log.Fatal(err)
 	}
 	defer res.Body.Close()
 	if res.StatusCode != 200 {
+		//TODO error handling
 		log.Fatalf("status code error: %d %s", res.StatusCode, res.Status)
 	}
 
-	// html scrapping
-	doc, err := goquery.NewDocumentFromReader(res.Body)
-	if err != nil {
-		log.Fatal(err)
+	response = scraping.ScrapeBody(res.Body)
+	if err = json.Unmarshal([]byte(response), &jsonResponse); err != nil {
+		log.Fatalf("unable to unmarshal %v ", err)
 	}
-	fmt.Println("ready!!!")
-	doc.Find("script").Each(func(i int, s *goquery.Selection) {
-		// For each item found, get the band and title
-		//json_str = html.split('root.App.main =')[1].split(
-		//'(this)')[0].split(';\n}')[0].strip()
-		content := s.Contents().Text()
-		if strings.Contains(content, "root.App.main") {
-			xresponse := strings.Split((strings.Split(content, "(this)")[0]), "root.App.main =")[1]
-			response = strings.Replace(xresponse, ";\n}", "", 1)
-		}
-		//p := s.Has("root.App.main").Text()
-	})
+
+	fmt.Printf("Symbol %s", jsonResponse.Context.Dispatcher.Stores.QSS.Symbol)
+
 	return response
-	// .Each(func(index int, item *goquery.Selection) {
-	// 	title := item.Text()
-	// 	fmt.Println("Title ", title)
-	// })
 }
