@@ -36,7 +36,24 @@ func Get(t string) string {
 		log.Fatalf("unable to unmarshal %v ", err)
 	}
 
-	fmt.Printf("Symbol %s", jsonResponse.Context.Dispatcher.Stores.QSS.Symbol)
+	//fmt.Printf("Symbol %v", jsonResponse.Context.Dispatcher.Stores.QSS)
+	prettyPrintJson(jsonResponse.Context.Dispatcher.Stores.QSS)
 
 	return response
 }
+
+func prettyPrintJson(input types.QuoteSummaryStore) {
+	b, err := json.MarshalIndent(input, "", " ")
+	if err == nil {
+		s := string(b)
+		fmt.Println(s)
+	}
+}
+
+/*
+func prettyPrintJson(b []byte) {
+	var out bytes.Buffer
+	json.Indent(&out, b, "", "  ")
+	fmt.Printf("%s", out.Bytes())
+}
+*/
