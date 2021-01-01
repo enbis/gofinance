@@ -81,7 +81,7 @@
 							"pm.test(\"check value response\", function () {",
 							"    resp = pm.response.json()",
 							"    var j = resp.json",
-							"    pm.expect(j.first).to.eql(\"b\");",
+							"    pm.expect(j.first).to.eql(\"a\");",
 							"})"
 						],
 						"type": "text/javascript"
