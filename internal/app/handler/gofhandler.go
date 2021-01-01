@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/enbis/gofinance/internal/app/gofinance/foundamentals"
@@ -21,4 +22,9 @@ func Request(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(responsePayload{
 		Data: data,
 	})
+}
+
+func GoFinInfo(w http.ResponseWriter, r *http.Request) {
+	t := r.URL.Query().Get("ticker")
+	fmt.Println("ticker ricevuto ", t)
 }

@@ -32,10 +32,11 @@ to quickly create a Cobra application.`,
 		wait = 30 * time.Second
 		// Routers declarations
 		r := mux.NewRouter()
-		s := r.PathPrefix("/api/v1/").Subrouter()
+		api := r.PathPrefix("/api/v1/").Subrouter()
 
 		// Routes handling
-		s.HandleFunc("/", handler.Request).Methods("GET")
+		api.HandleFunc("/", handler.Request).Methods("GET")
+		api.HandleFunc("/info", handler.GoFinInfo).Methods("GET")
 
 		log.Println("listening on port 3000")
 
