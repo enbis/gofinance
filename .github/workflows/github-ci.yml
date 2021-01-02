@@ -12,22 +12,31 @@ on:
 jobs:
   test-api:
     runs-on: ubuntu-latest
+    container: 
+      image: postman/newman
+      volumes: 
+        - ./test:/etc/newman
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@main
       
-    # INstall Node on the runner
-    - name: Install Node
-      uses: actions/setup-node@v1
-      with: 
-        node-version: '12.x'
+    # # INstall Node on the runner
+    # - name: Install Node
+    #   uses: actions/setup-node@v1
+    #   with: 
+    #     node-version: '12.x'
     
-    # Install the newman command line utility and also install the html extra reporter
-    - name: Install newman
-      run: |
-       npm install -g newman
+    # # Install the newman command line utility and also install the html extra reporter
+    # - name: Install newman
+    #   run: |
+    #    npm install -g newman
 
-    # Run the POSTMAN collection
-    - name: Run POSTMAN collection
+    # # Run the POSTMAN collection
+    # - name: Run POSTMAN collection
+    #   run: |
+    #    newman run ./test/HttpbinForNewman.json -r cli
+
+    # Run the docker of newman
+    - name: Docker for newman
       run: |
-       newman run ./test/HttpbinForNewman.json -r cli
+        run "HttpbinForNewman.json" --reporters="cli"
