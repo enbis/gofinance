@@ -12,10 +12,6 @@ on:
 jobs:
   test-api:
     runs-on: ubuntu-latest
-    container: 
-      image: postman/newman:latest
-      volumes: 
-        - test:/etc/newman
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@main
@@ -39,4 +35,4 @@ jobs:
     # Run the docker of newman
     - name: Docker for newman
       run: |
-        run "HttpbinForNewman.json" --reporters="cli"
+        docker run -v $(pwd)/test:/etc/newman -t postman/newman:latest run "HttpbinForNewman.json" --reporters="cli"
