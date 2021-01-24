@@ -26,3 +26,8 @@ func TestScrapeBody(t *testing.T) {
 		assert.Equal(t, "AAPL", in.Context.Dispatcher.Stores.QSS.Symbol)
 	}
 }
+
+func TestScrapeTable(t *testing.T) {
+	holders := ScrapeTable("https://finance.yahoo.com/quote/MSFT/holders")
+	fmt.Printf("%v \n", holders)
+}
