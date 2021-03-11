@@ -36,7 +36,7 @@ to quickly create a Cobra application.`,
 
 		// Routes handling
 		api.HandleFunc("/", handler.Request).Methods("GET")
-		api.HandleFunc("/info", handler.GoFinInfo).Methods("GET")
+		api.HandleFunc("/info", handler.Info).Methods("GET")
 
 		log.Println("listening on port 3000")
 
